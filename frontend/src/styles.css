@@ -1,0 +1,269 @@
+/* ============================================================
+   VARIÁVEIS E BASE
+   ============================================================ */
+:root{
+  --shell-max: 1140px;  /* largura alvo desktop */
+  --shell-pad: 24px;    /* gutter fixo esquerda/direita */
+  --brand-blue: #068ed0;
+  --bs-primary: #068ed0;           /* muda o primary do Bootstrap */
+}
+.bg-primary {
+  background-color: #068ed0 !important;
+}
+
+
+
+/* Nova classe para aplicar a cor de fundo correta */
+.bg-alphacode-blue {
+    background-color: var(--brand-blue) !important;
+}
+
+html, body{
+  height: 100%;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Um ÚNICO container horizontal para header, conteúdo e footer */
+.app-shell{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--shell-pad);
+  padding-right: var(--shell-pad);
+  max-width: calc(var(--shell-max) + var(--shell-pad) * 2);
+}
+
+/* acompanha breakpoints do Bootstrap (opcional) */
+@media (min-width: 576px){ .app-shell{ max-width: calc(540px + var(--shell-pad) * 2); } }
+@media (min-width: 768px){ .app-shell{ max-width: calc(720px + var(--shell-pad) * 2); } }
+@media (min-width: 992px){ .app-shell{ max-width: calc(960px + var(--shell-pad) * 2); } }
+@media (min-width: 1200px){ .app-shell{ max-width: calc(1140px + var(--shell-pad) * 2); } }
+
+/* Remove paddings laterais da barra/rodapé (para seguirem a régua) */
+.rail-reset{ padding-left: 0; padding-right: 0; }
+
+/* ============================================================
+   **FIX PRINCIPAL**: se houver .container dentro do <main class="app-shell">,
+   mata o padding e a largura para não “quebrar” o alinhamento da régua.
+   ============================================================ */
+.app-shell .container{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 100% !important;
+}
+
+/* Mantém o gutter do grid dentro da régua */
+.app-shell .row{ --bs-gutter-x: 24px; }
+
+/* Se o seu template tiver um wrapper do botão, use .form-actions */
+.form-actions{ text-align: right; }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar{ min-height: 100px; }
+.navbar .navbar-brand img{ height: 100px; width: auto; }
+.navbar .nav-link{
+  padding: .5rem .75rem;
+  font-weight: 500;
+  color: #fff;
+  opacity: .9;
+  transition: opacity .2s ease;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link.active{
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.navbar-toggler{ border-color: rgba(255,255,255,.5); }
+
+/* === FORM & TABLE OVERRIDES === */
+
+/* ---------- INPUTS (mais específicos que o Bootstrap) ---------- */
+.app-shell input.form-control,
+.app-shell select.form-control,
+.app-shell textarea.form-control {
+  height: 44px;                   /* altura uniforme estilo wireframe */
+  border: 1px solid #d9e1ec;
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  background-color: #fff;
+}
+
+/* ====== WIREFRAME: inputs com apenas linha inferior ====== */
+/* Aplica SÓ quando o input tem a classe .form-control-underline */
+.app-shell .form-control.form-control-underline {
+  border: none !important;                 /* remove a borda padrão */
+  border-bottom: 2px solid #d9e1ec !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding-left: 0 !important;              /* alinhado ao wireframe */
+  padding-right: 0 !important;
+  height: 44px;                            /* mantém altura uniforme */
+}
+
+/* Placeholder igual ao restante do tema */
+.app-shell .form-control.form-control-underline::placeholder {
+  color: #9aa6b2;
+  opacity: 1;
+}
+
+/* Foco: só a linha inferior azul do branding */
+.app-shell .form-control.form-control-underline:focus {
+  outline: none;
+  box-shadow: none !important;
+  border-bottom-color: var(--brand-blue) !important;
+}
+
+/* Estado inválido: linha inferior vermelha */
+.app-shell .form-control.form-control-underline.is-invalid,
+.app-shell .form-control.form-control-underline.ng-invalid.ng-touched {
+  border-bottom-color: #dc3545 !important;
+}
+
+/* Ajuste opcional: remove “glow” do Bootstrap ao focar quando é underline */
+.app-shell .form-control.form-control-underline:focus-visible {
+  outline: none;
+}
+
+
+.app-shell .form-control::placeholder {
+  color: #9aa6b2;
+}
+
+.app-shell .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+  outline: 0;
+}
+
+/* Ajuste visual do input de data para ficar igual aos demais */
+.app-shell input[type="date"].form-control {
+  padding-right: 36px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+/* Labels como no wireframe */
+.app-shell .form-label {
+  font-weight: 600;
+  color: #3b4b5a;
+}
+
+/* ---------- TABELA COMO CARD (wireframe) ---------- */
+.table-card {
+  background: #fff;
+  border: 1px solid #e6ebf2;
+  border-radius: 0px;
+  box-shadow: 0 6px 14px -6px rgba(16, 24, 40, 0.15);
+  overflow: hidden; /* mantém cantos do header arredondados */
+}
+
+/* Sem linhas internas e sem zebra APENAS no corpo (tbody) */
+.table.contact-table {
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* >>> CORREÇÃO: limitar transparência ao corpo, não ao thead <<< */
+.table.contact-table > tbody > tr > * {
+  border-bottom: 0 !important;
+  background-color: transparent !important;
+}
+
+/* Cabeçalho azul com fonte branca, centralizado */
+.table.contact-table thead th {
+  background: #068ed0 !important;   /* era #0d6efd */
+  color: #fff !important;
+  font-weight: 600;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 0;
+}
+
+/* Células centralizadas */
+.table.contact-table tbody td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px 14px;
+  color: #334155;
+}
+
+/* Hover sutil (opcional) */
+.table.contact-table tbody tr:hover {
+  background: #f7faff;
+}
+
+/* Coluna Ações sem quebra */
+.table.contact-table td.actions {
+  white-space: nowrap;
+  width: 1%;
+}
+
+
+/* Checkboxes */
+.form-check-input{ border-color: var(--brand-blue); cursor: pointer; }
+.form-check-input:checked{ background-color: var(--brand-blue); border-color: var(--brand-blue); }
+
+.border-alphacode-blue{
+    border-top: 2px solid var(--brand-blue) !important;
+}
+
+/* ============================================================
+   RODAPÉ (azul + alinhado às réguas)
+   ============================================================ */
+.footer-custom{ color: #fff; }
+.footer-custom a, .footer-custom span{ color: #fff; text-decoration: none; }
+
+/* Termos | Políticas com espaço compacto e sem “buraco” */
+.footer-links{ display: inline-flex; align-items: center; gap: .5rem; }
+.footer-links .separator{ opacity: .85; margin: 0; }
+.link-plain:hover{ text-decoration: underline; }
+
+/* Logo branco no fundo azul */
+.footer-info img {
+  filter: brightness(0) invert(1);
+  height: 20px;
+  width: auto;
+}
+
+.footer-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem; /* espaçamento horizontal equilibrado */
+}
+
+.footer-info span {
+  white-space: nowrap; /* evita quebra entre © e o texto */
+}
+
+/* Distribuição responsiva do footer */
+/* Agora, o app-shell do footer é apenas um wrapper centralizador. */
+.footer-custom .app-shell{
+  display: flex; /* Garante que o col-lg-10 interno seja centralizado */
+  justify-content: center;
+}
+@media (max-width: 768px){
+  /* O layout de coluna no mobile é tratado pelas classes Bootstrap no app.html */
+  .footer-custom .col-lg-10 {
+    text-align: center; /* Garante que o texto seja centralizado no mobile */
+  }
+}
+
+/* ============================================================
+   AJUSTES FINOS
+   ============================================================ */
+@media (max-width: 992px){
+  .navbar .navbar-brand span{ font-size: 1rem; }
+}
+@media (max-width: 576px){
+  .form-label-wireframe{ font-size: .9rem; }
+  .btn-primary{ width: 100%; }
+}

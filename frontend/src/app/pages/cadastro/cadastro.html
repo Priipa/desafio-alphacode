@@ -1,0 +1,221 @@
+<!-- src/app/pages/cadastro/cadastro.html -->
+
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-10">
+
+    <!-- mensagens de feedback -->
+    <div *ngIf="mensagemFormulario" [class]="'alert alert-' + mensagemFormulario.tipo" role="alert">
+      {{ mensagemFormulario.texto }}
+    </div>
+
+    <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- linha 1: nome completo / data de nascimento -->
+      <div class="row g-4 mb-1">
+        <div class="col-md-6">
+          <label for="nome" class="form-label form-label-wireframe">Nome completo</label>
+          <input
+            type="text"
+            id="nome"
+            formControlName="nome"
+            class="form-control form-control-underline"
+            placeholder="Ex.: Giovanna Priscila Nascimento"
+            (blur)="onNomeBlur()"
+            [class.is-invalid]="f['nome'].touched && f['nome'].invalid"
+          />
+          <div *ngIf="f['nome'].touched && f['nome'].errors" class="invalid-feedback d-block">
+            <span *ngIf="f['nome'].errors['required']">Campo obrigatório.</span>
+            <span *ngIf="f['nome'].errors['fullnameParts']">Digite no mínimo o primeiro nome e sobrenome.</span>
+            <span *ngIf="f['nome'].errors['invalidChars']">
+              Use apenas letras (com ou sem acentos), espaços e, se necessário, hífen/apóstrofo dentro dos nomes.
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="data_nascimento" class="form-label form-label-wireframe">Data de nascimento</label>
+          <input
+            type="text"
+            id="data_nascimento"
+            formControlName="data_nascimento"
+            class="form-control form-control-underline"
+            placeholder="Ex.: 16/07/1993"
+           (input)="onBirthInput($event)"
+           (blur)="onBirthBlur()"
+           [class.is-invalid]="f['data_nascimento'].touched && f['data_nascimento'].invalid"
+           inputmode="numeric"
+           autocomplete="bday"
+          />
+          <div *ngIf="f['data_nascimento'].touched && f['data_nascimento'].errors" class="invalid-feedback d-block">
+            <span *ngIf="f['data_nascimento'].errors['required']">Campo obrigatório.</span>
+            <span *ngIf="f['data_nascimento'].errors['invalidFormat']">Use o formato dd/mm/aaaa.</span>
+            <span *ngIf="f['data_nascimento'].errors['invalidDate']">Data inválida.</span>
+            <span *ngIf="f['data_nascimento'].errors['futureOrToday']">Data inválida.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- linha 2: e-mail / profissão -->
+      <div class="row g-4 mb-1">
+        <div class="col-md-6">
+          <label for="email" class="form-label form-label-wireframe">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="form-control form-control-underline"
+            placeholder="Ex.: pripa@gmail.com"
+            [class.is-invalid]="f['email'].touched && f['email'].invalid"
+            autocomplete="email"
+            spellcheck="false"
+          />
+          <div *ngIf="f['email'].touched && f['email'].errors" class="invalid-feedback d-block">
+            <span *ngIf="f['email'].errors['required']">Campo obrigatório.</span>
+            <span *ngIf="f['email'].errors['email']">Formato de e-mail inválido.</span>
+            <span *ngIf="f['email'].errors['emailSpaces']">E-mail não pode conter espaços.</span>
+            <span *ngIf="f['email'].errors['emailAtCount']">Deve conter exatamente um “@”.</span>
+            <span *ngIf="f['email'].errors['emailNoDotAfterAt']">Deve haver pelo menos um “.” após o “@”.</span>
+            <span *ngIf="f['email'].errors['emailNotUnique']">Já existe um cadastro com este e-mail.</span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="profissao" class="form-label form-label-wireframe">Profissão</label>
+          <input
+            type="text"
+            id="profissao"
+            formControlName="profissao"
+            class="form-control form-control-underline"
+            placeholder="Ex.: Desenvolvedora Backend"
+            (blur)="onProfissaoBlur()"
+            [class.is-invalid]="f['profissao'].touched && f['profissao'].invalid"
+          />
+          <div *ngIf="f['profissao'].touched && f['profissao'].errors" class="invalid-feedback d-block">
+            <span *ngIf="f['profissao'].errors['required']">Campo obrigatório.</span>
+            <span *ngIf="f['profissao'].errors['minlength']">Mínimo de 3 caracteres.</span>
+            <span *ngIf="f['profissao'].errors['maxlength']">Máximo de 155 caracteres.</span>
+            <span *ngIf="f['profissao'].errors['invalidChars']">
+              Use apenas letras (com acentos), números, espaços e separadores comuns: - ' . / & ( )
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- linha 3: telefone para contato / celular para contato -->
+      <div class="row g-4 mb-3">
+        <div class="col-md-6">
+          <label for="telefone" class="form-label form-label-wireframe">Telefone para contato (opcional)</label>
+          <input
+            type="text"
+            id="telefone"
+            formControlName="telefone"
+            class="form-control form-control-underline"
+            placeholder="Ex.: (11) 4033-2019"
+            (input)="onTelefoneInput($event)"
+            inputmode="numeric"
+            [class.is-invalid]="f['telefone'].touched && f['telefone'].invalid"
+          />
+          <div *ngIf="f['telefone'].touched && f['telefone'].errors" class="invalid-feedback d-block">
+            <span *ngIf="f['telefone'].errors['telInvalid']">Formato inválido. Use (##) ####-#### ou deixe em branco.</span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label for="celular" class="form-label form-label-wireframe">Celular para contato</label>
+          <input
+            type="text"
+            id="celular"
+            formControlName="celular"
+            class="form-control form-control-underline"
+            placeholder="Ex.: (11) 91680-9649"
+            (input)="onCelularInput($event)"
+            inputmode="numeric"
+            [class.is-invalid]="f['celular'].touched && f['celular'].invalid"
+          />
+          <div *ngIf="f['celular'].touched && f['celular'].errors" class="invalid-feedback d-block">
+            <span *ngIf="f['celular'].errors['required']">Campo obrigatório.</span>
+            <span *ngIf="f['celular'].errors['celInvalid']">Formato inválido. Use (##) #####-####.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- checkboxes (sem card, sem título) -->
+      <div class="row mb-4 gy-2">
+        <div class="col-md-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="check1" formControlName="check1" />
+            <label class="form-check-label" for="check1">Número de celular possui Whatsapp</label>
+          </div>
+          <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" id="check2" formControlName="check2" />
+            <label class="form-check-label" for="check2">Enviar notificações por SMS</label>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="check3" formControlName="check3" />
+            <label class="form-check-label" for="check3">Enviar notificações por E-mail</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end form-actions">
+        <button type="submit" class="btn btn-primary px-4" [disabled]="cadastroForm.invalid">
+          {{ editando ? 'Salvar alterações' : 'Cadastrar contato' }}
+        </button>
+      </div>
+    </form>
+
+    <!-- lista de usuários cadastrados -->
+    <br/><hr class="mt-5 mb-4 border-alphacode-blue" /><br />
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <div *ngIf="mensagemLista" [class]="'alert alert-' + mensagemLista.tipo" role="alert">
+          {{ mensagemLista.texto }}
+        </div>
+
+        <div *ngIf="usuarios.length === 0" class="alert alert-info">
+          Nenhum contato cadastrado.
+        </div>
+
+        <div *ngIf="usuarios.length > 0" class="table-responsive">
+          <!-- Card da tabela (borda única + sombra) -->
+          <div class="table-card mt-4">
+            <table class="table contact-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Data de nascimento</th>
+                  <th>E-mail</th>
+                  <th>Celular para contato</th>
+                  <th class="text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of usuarios">
+                  <td>{{ user.nome }}</td>
+                  <td>{{ user.data_nascimento }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.celular }}</td>
+                  <td class="actions text-center">
+                    <button type="button" class="btn btn-sm p-0 me-2"
+                            (click)="editarUsuario(user.id)" title="Editar">
+                      <img src="assets/editar.png" alt="Editar" height="20" width="20">
+                    </button>
+                    <button type="button" class="btn btn-sm p-0"
+                            (click)="deletarUsuario(user.id)" title="Excluir">
+                      <img src="assets/excluir.png" alt="Excluir" height="20" width="20">
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br/><br/><br/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
