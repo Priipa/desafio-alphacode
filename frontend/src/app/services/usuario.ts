@@ -20,11 +20,9 @@ export interface UsuarioData {
 @Injectable({
   providedIn: 'root'
 })
-// USANDO O NOME DA CLASSE CORRETO: Usuario
+
 export class Usuario { 
   
-  // ATENÇÃO: Defina a URL para o seu arquivo PHP
-  // Se a porta do seu Apache não for 80, adicione-a aqui (ex: :8080)
   private readonly apiUrl = 'http://localhost/desafio-alphacode/api/usuarios.php'; 
 
   constructor(private readonly http: HttpClient) {}
